@@ -1,5 +1,13 @@
-getwd()
+#-------------------------#
+#                         #
+# Cleaning the crime data #
+#                         #
+#-------------------------#
 
-df <- matrix(2, ncol = 4, nrow = 4)
+setwd("D:")
 
-df1 <- t(df)
+crime16 <- read.csv("NYPD_Complaint_Data_Current_YTD_16.csv", stringsAsFactors = F)
+
+head(crime16)
+
+
