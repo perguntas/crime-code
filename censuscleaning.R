@@ -27,6 +27,7 @@ census <- census[-1,]
 # Remove all columns with only 100 (percent) or " ( X ) " (ie without content)
 census <- Filter(function(x) (length(unique(x)) > 2), census)
 
+write.csv(census, "2010_NYC_Census_cleaned.csv")
 
 # to do:
 # - remove tracts not in NYC

@@ -4,6 +4,10 @@ setwd("D:/crime-data")
 crime16 <- read.csv("NYPD_Complaint_Map_Year_to_Date16.csv", stringsAsFactors = F)
 # For 2006 - 2015
 crime0615 <- read.csv("NYPD_Complaint_Map_Historic.csv", stringsAsFactors = F)
+colnames(crime0615) <- tolower(colnames(crime0615))
+colnames(crime16) <- tolower(colnames(crime16))
+
+crime <- rbind(crime0615, crime16)
 
 
 colnames(crime16) <- c("cmpl_num", "fromDate", "fromTime", "toDate", "toTime", "reportDate", "KY_CD", "offense", "PD_CD",
