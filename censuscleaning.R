@@ -5,6 +5,7 @@
 #--------------------------#
 
 setwd("D:/crime-data")
+library(foreign) # for dbf table
 
 census <- read.csv("2010_NYC_Census_Tracts.csv", stringsAsFactors = F)
 
@@ -27,7 +28,20 @@ census <- census[-1,]
 # Remove all columns with only 100 (percent) or " ( X ) " (ie without content)
 census <- Filter(function(x) (length(unique(x)) > 2), census)
 
-write.csv(census, "2010_NYC_Census_cleaned.csv")
+#write.csv(census, "2010_NYC_Census_cleaned.csv")
+
+# DONT' EVEN NEED THAT
+# split census GEO.id
+#census_string <- strsplit(census$GEO.display.label, ", ")
+#census$tract <- sapply(census_string, "[[", 1)
+#census$county <- sapply(census_string, "[[", 2)
+
+# census$GEO.id2 and nyct$CT2010 match by 36005+CT2010
+# NOPE
+
+# check   
+nyct2010 <- read.dbf("D:/crime-data/nyc-taxi-data/nyct2010_15b/nyct2010.dbf", as.is = T)
+
 
 # to do:
 # - remove tracts not in NYC
