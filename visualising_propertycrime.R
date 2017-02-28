@@ -64,7 +64,7 @@ NY_layer <- sp:::spTransform(readOGR("D:/crime-data/nyc-taxi-data/nyct2010_15b/n
 
 # fortify as data.frame
 NY_layer <- fortify(NY_layer, region = "BoroCT2010")
-NY_layer <- left_join(NY_layer, tractID)
+NY_layer <- left_join(NY_layer, tractID, by = c("id" = "boroct2010"))
 
 # MAKE FUNCTION OR DPLYR CHAIN
 plotData <- left_join(NY_layer, property_crime15, by = c("gid" = "loc_gid"))
@@ -112,7 +112,7 @@ daily_crime15 <-
 #   summarise(occ = n()) %>%
 #   setorder(KW)
 
-
+#lubridate::isoweek
 
 ggplot(daily_crime15, aes(cmplnt_fr_dt, occ)) + 
   geom_line() +
