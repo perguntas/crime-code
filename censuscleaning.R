@@ -5,64 +5,54 @@
 #--------------------------#
 
 library(RPostgreSQL)
-library(sp)
-library(rgdal)
-library(ggplot2)
 library(dplyr)
 
 path <- "D:/crime-data/"
 con1 <- dbConnect(dbDriver("PostgreSQL"), dbname = "crime-data", user = "postgres", host = "localhost")
 
+# get NYC 
+tractID <- dbGetQuery(con1, "SELECT * FROM geo_mapping;") # wait is this enough for visualisation
+
 census <- read.csv(paste0(path, "2010_NYC_Census_Tracts.csv"), stringsAsFactors = F)
 
-keep <- c(# GEO.id2
-          "GEO.id2",
-          # total population
-          "HD01_S001",
-          # median age
-          "HD01_S020",
-          # % male population
-          "HD02_S026",
-          # % male age groups
-          "HD02_S030", "HD02_S031", "HD02_S032", "HD02_S033",
-          # % race
-          "HD02_S078", "HD02_S079", "HD02_S080", "HD02_S081", "HD02_S089", "HD02_S107",
-          # housing vacancy
-          "HD02_S171",
-          # household size (?)
-          "HD01_S167",
-          # female-headed households
-          "HD02_S157",
-          # institutionalized population
-          "HD02_S144"
-          )
+census <- 
+  census %>% 
+  # remove first row
+  filter(row_number()!=1) %>%
+  # subset to tracts in NYC
+  filter(GEO.id2 %in% tractID$ctlabel) %>%
+  # make columns numeric
+  mutate_each(funs(as.numeric), -GEO.id2) %>%
+  # create new variable young_male for males between 15-29 and set column as character
+  mutate(young_male = rowSums(cbind(HD02_S030, HD02_S031, HD02_S032), na.rm = T),
+         GEO.id2 = as.character(GEO.id2)) %>%
+  # select columns for analysis
+  select(ctlabel = GEO.id2,
+         population = HD01_S001,
+         age = HD01_S020,
+         male = HD02_S026,
+         young_male,
+         white = HD02_S078,
+         black = HD02_S079,
+         native = HD02_S080,
+         asian = HD02_S081,
+         pacific = HD02_S089,
+         hispanic = HD02_S107,
+         vacancy = HD02_S171,
+         female_head = HD02_S157,
+         institution = HD02_S144) %>%
+  # make numbers as percentages
+  mutate_each(funs(./100), -ctlabel, -population, -age)
 
-# subset columns
-census <- census[-1, colnames(census) %in% keep]
-# make columns numeric
-census[, -1] <- apply(census[, -1], 2, function(x) as.numeric(x))
+# tracts with population < 50 and Riker's Island are set to NA
+ind <- which(census$population < 50 | census$ctlabel == "36005000100")
+census[ind, c(names(census)[-1])] <- NA
 
-# import NYC files alone
-NY_layer <- sp:::spTransform(readOGR("D:/crime-data/nyc-taxi-data/nyct2010_15b/nyct2010.shp", layer = "nyct2010"), CRS("+proj=longlat +datum=WGS84"))
-NY_layer <- fortify(NY_layer, region = "BoroCT2010")
+#write cleaned file for data visualisation
+write.csv(census, file = paste0(path, "2010_NYC_Census_cleaned.csv"), row.names = F)
 
-# change shapefile ID
-tractID <- dbGetQuery(con1, "SELECT * FROM geo_mapping;")
-NY_layer <- left_join(NY_layer, tractID, by = c("id" = "boroct2010"))
+# remove tracts with all empty values
+census <- census[rowSums(apply(census, 2, is.na)) < (ncol(census) - 1),]
 
-# subset census to NYC
-census <- census[census$GEO.id2 %in% NY_layer$ctlabel, ]
-colnames(census)[1] <- "ctlabel"
-
-write.csv(census, file = paste0(path, "2010_NYC_Census_cleaned.csv"), row.names=FALSE)
-
-# not needed right now
-# census[1,] <- tolower(census[1,])
-# 
-# # Remove all columns without content (denoted by " ( X ) " in the census file)
-# remove <- colnames(census)[grepl("( X )", census[2,])]
-# census <- census[, !colnames(census) %in% remove]
-# 
-# # Remove all columns related to absolute number, excluding housing numbers and median age, excluding the first occurrence
-# remove <- colnames(census)[(grepl("number", census[1,]) 
-#                             & !grepl("hous|median", census[1,]))][-1]
+# write cleaned file for analysis
+write.csv(census, file = paste0(path, "2010_NYC_Census_analysis.csv"), row.names = F)
