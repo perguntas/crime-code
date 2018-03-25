@@ -1,0 +1,11 @@
+Name of Quantlet: foursquare_data_cleaning
+
+Published in: Improving Crime Count Predictions
+
+Description: Gets Foursquare data from API for each NYC census tract and creates a plot for each category
+
+Keywords: foursquare, API, plot, New York
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
