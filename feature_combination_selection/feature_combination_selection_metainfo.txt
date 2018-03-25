@@ -1,0 +1,11 @@
+Name of Quantlet: feature_combination_selection
+
+Published in: Improving Crime Count Predictions
+
+Description: Using a spatial CAR model, this file evaluates the best combination of features on a hold-out samples within the full training sample
+
+Keywords: feature selection, CAR, prediction, model evaluation, out of sample
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
