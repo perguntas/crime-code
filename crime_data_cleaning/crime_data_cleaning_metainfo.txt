@@ -1,0 +1,11 @@
+Name of Quantlet: crime_data_cleaning
+
+Published in: Improving Crime Count Predictions
+
+Description: creates data frames of merged census data, crime data, taxi data separately for violent and property crime
+
+Keywords: crime, census, taxi, New York, datacleaning
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
