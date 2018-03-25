@@ -1,0 +1,11 @@
+Name of Quantlet: census_data_cleaning
+
+Published in: Improving Crime Count Predictions
+
+Description: Takes census data and subsets it to relevant New York City census tracts
+
+Keywords: census, datacleaning, New York
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
