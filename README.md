@@ -1,4 +1,1 @@
-# crime-code
-
-# this is a read.me
-# more to add later
+This project uses taxi data obtained from here: https://github.com/toddwschneider/nyc-taxi-data and crime data obtained here: http://www1.nyc.gov/site/nypd/stats/crime-statistics/historical.page as well as Foursquare and Twitter data obtained through their respective APIs to analyze crime patterns and predict crime counts.
