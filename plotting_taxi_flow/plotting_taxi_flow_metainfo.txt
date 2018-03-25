@@ -1,0 +1,11 @@
+Name of Quantlet: plotting_taxi_flow
+
+Published in: Improving Crime Count Predictions
+
+Description: This file takes a database with a taxi trip destinations and origins and creates a map of the flows
+
+Keywords: plot, taxi trips, New York, shapefile, flow
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
