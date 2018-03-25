@@ -1,0 +1,11 @@
+Name of Quantlet: estimation_and_prediction_violent_crime
+
+Published in: Improving Crime Count Predictions
+
+Description: takes a cleaned violent crime file and estimates five models in eight different variable settings
+
+Keywords: crime, Poisson regression, SAR, CAR, GLMM
+
+Author: Lara Vomfell
+
+Submitted:  25/03/2018
